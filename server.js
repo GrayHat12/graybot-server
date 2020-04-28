@@ -66,7 +66,6 @@ var server = http
     }
   }).listen(3000,()=>{
     log('started',server.address());
-    fs.writeFileSync(__dirname + "/server.log","");
   });
 
 function sendSSE(req, res) {
