@@ -1,5 +1,5 @@
 var debug = require('debug');
-var https = require("http");
+var https = require("https");
 var fs = require("fs");
 //const dotenv = require('dotenv');
 //dotenv.config();
@@ -35,7 +35,7 @@ class Custom {
   }
 }
 
-var server = http
+var server = https
   .createServer(function(req, res) {
     log('ping',{url : req.url, data : req.socket.address()});
     if (req.headers.accept && req.headers.accept == "text/event-stream") {
