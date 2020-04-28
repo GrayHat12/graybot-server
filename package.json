@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Server for GrayBot desktop",
+  "readme": "README.md",
   "bugs": {
     "email": "grayhathacks10@gmail.com",
     "url": "https://github.com/GrayHat12/graybot-server/issues"
