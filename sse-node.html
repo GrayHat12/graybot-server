@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <button onclick="send">SEND MESSAGE</button><br>
+  <script>
+    var key = -1;
+    var source = new EventSource('/events');
+    source.addEventListener('mr',(e)=>{
+        console.log('message Recieved',e);
+        document.body.innerHTML += e.data + '<br>';
+    });
+    source.addEventListener('message',(ev)=>{
+        console.log(ev);
+    })
+    source.addEventListener('key',(e)=>{
+        key = e.data;
+        console.log('key',key);
+    });
+    function send(){
+        axios.get('http://localhost:5000/message',{key : key, data : {a : 'a'}}).then(()=>{console.log('done')}).catch(console.error);
+    }
+  </script>
+</body>
+</html>

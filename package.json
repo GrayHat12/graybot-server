@@ -1,0 +1,32 @@
+{
+  "name": "graybot-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Server for GrayBot desktop",
+  "bugs": {
+    "email": "grayhathacks10@gmail.com",
+    "url": "https://github.com/GrayHat12/graybot-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GrayHat12/graybot-server.git"
+  },
+  "author": {
+    "name": "GrayHat",
+    "email": "grayhathacks10@gmail.com",
+    "url": "https://gray-hat.me/"
+  },
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server.js"
+  },
+  "license": "ISC",
+  "nodemonConfig": {},
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "supports-color": "^7.1.0"
+  }
+}
