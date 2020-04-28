@@ -1,11 +1,11 @@
 var debug = require('debug');
-var https = require("https");
+var http = require("http");
 var fs = require("fs");
 const dotenv = require('dotenv');
 dotenv.config();
 
 debug.enable('*');
-debug = debug('https');
+debug = debug('http');
 var id = '=>';
 
 const connections = new Map();
@@ -35,7 +35,7 @@ class Custom {
   }
 }
 
-var server = https
+var server = http
   .createServer(function(req, res) {
     log('ping',{url : req.url, data : req.socket.address()});
     if (req.headers.accept && req.headers.accept == "text/event-stream") {
@@ -64,8 +64,9 @@ var server = https
       res.write(fs.readFileSync(__dirname + "/server.log"));
       res.end();
     }
-  }).listen(process.env.port,()=>{
+  }).listen(3000,()=>{
     log('started',server.address());
+    fs.writeFileSync(__dirname + "/server.log","");
   });
 
 function sendSSE(req, res) {
@@ -78,7 +79,6 @@ function sendSSE(req, res) {
   req.on("close", con.closeConnection);
   connections.set(con.key, con);
   log('new connection',{data : req.socket.address()});
-  fs.writeFileSync(__dirname + "/server.log","");
   constructSSE(res, con.key);
 }
 
