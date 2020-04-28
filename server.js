@@ -1,8 +1,8 @@
 var debug = require('debug');
 var https = require("https");
 var fs = require("fs");
-//const dotenv = require('dotenv');
-//dotenv.config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 debug.enable('*');
 debug = debug('https');
