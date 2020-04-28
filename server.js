@@ -92,7 +92,7 @@ function sendSSE(req, res) {
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
   });
-  var con = new Custom(uniqueId++, res, req);
+  var con = new Custom(''+uniqueId++, res, req);
   req.on("close", con.closeConnection);
   connections.set(con.key, con);
   log("new connection", { data: req.socket.address(), uid: con.key });
