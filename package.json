@@ -23,7 +23,10 @@
     "start": "nodemon ./server.js"
   },
   "license": "ISC",
-  "nodemonConfig": {},
+  "nodemonConfig": {
+    "ignore" : ["*.html","*.md","*.log"],
+    "delay" : "2000"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "debug": "^4.1.1",

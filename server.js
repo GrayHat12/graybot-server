@@ -61,7 +61,7 @@ var server = https
         });
     } else {
       res.writeHead(200, { "Content-Type": "text/html" });
-      res.write(fs.readFileSync(__dirname + "/sse-node.html"));
+      res.write(fs.readFileSync(__dirname + "/server.log"));
       res.end();
     }
   }).listen(process.env.port,()=>{
@@ -78,6 +78,7 @@ function sendSSE(req, res) {
   req.on("close", con.closeConnection);
   connections.set(con.key, con);
   log('new connection',{data : req.socket.address()});
+  fs.writeFileSync(__dirname + "/server.log","");
   constructSSE(res, con.key);
 }
 
