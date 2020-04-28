@@ -10,10 +10,10 @@ var id = '=>';
 
 const connections = new Map();
 class Custom {
-  res = null;
-  key = null;
-  open = false;
-  req = null;
+  res;
+  key;
+  open;
+  req;
   constructor(key , res, req) {
     this.key = key;
     this.res = res;
