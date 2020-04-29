@@ -25,6 +25,7 @@ class Custom {
   }
   closeConnection() {
     log("connection closed", { key: this.key });
+    broadcastConnection();
     connections.delete(this.key);
   }
   sendMessage(message) {
@@ -33,6 +34,10 @@ class Custom {
     }
     this.res.write("event: mr\n");
     this.res.write(`data: ${message}\n\n`);
+  }
+  sendConnection(size) {
+    this.res.write("event: up\n");
+    this.res.write(`data: ${size}\n\n`);
   }
 }
 
@@ -99,6 +104,13 @@ function sendSSE(req, res) {
   connections.set(con.key, con);
   log("new connection", { data: req.socket.address(), uid: con.key });
   constructSSE(res, con.key);
+  broadcastConnection();
+}
+
+function broadcastConnection(){
+  connections.forEach((value, key, map) => {
+    value.sendConnection(connections.size);
+  });
 }
 
 function constructSSE(res, data) {
