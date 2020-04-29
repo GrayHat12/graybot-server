@@ -53,6 +53,7 @@ var server = http
       var body = "";
       req.on("data", function(chunk) {
         body += chunk;
+        log('chunk',chunk);
       });
       req.on("end", function() {
         res.writeHead(200);

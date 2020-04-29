@@ -101,4 +101,5 @@ dist
 
 # TernJS port file
 .tern-port
-sse-node.html
+
+*.html
