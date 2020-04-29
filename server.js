@@ -60,7 +60,6 @@ var server = http
         res.write("done");
         res.end();
         body = body
-          .replace(/ /g, "")
           .replace(/\t/g, "")
           .replace(/\n/g, "");
         try {
