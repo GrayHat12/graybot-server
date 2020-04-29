@@ -64,7 +64,9 @@ var server = http
           .replace(/\t/g, "")
           .replace(/\n/g, "");
         try {
-          if (connections.has(JSON.parse(body)["key"])) {
+          var recdata = JSON.parse(body);
+          log("recieved data with key",{key : recdata['key']});
+          if (connections.has(recdata['key'])) {
             connections.forEach((value, key, map) => {
               value.sendMessage(body);
             });
