@@ -24,13 +24,18 @@
   },
   "license": "ISC",
   "nodemonConfig": {
-    "ignore" : ["*.html","*.md","*.log"],
-    "delay" : "2000"
+    "ignore": [
+      "*.html",
+      "*.md",
+      "*.log"
+    ],
+    "delay": "2000"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
+    "gtube": "^1.1.0",
     "supports-color": "^7.1.0"
   }
 }

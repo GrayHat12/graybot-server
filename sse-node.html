@@ -14,14 +14,26 @@
         document.body.innerHTML += e.data + '<br>';
     });
     source.addEventListener('message',(ev)=>{
-        console.log(ev);
+        console.log('message',ev);
+    })
+    source.addEventListener('sr',(ev)=>{
+        console.log('sr',ev);
+    })
+    source.addEventListener('srer',(ev)=>{
+        console.log('srer',ev);
+    })
+    source.addEventListener('item',(ev)=>{
+        console.log('item',ev);
+    })
+    source.addEventListener('iter',(ev)=>{
+        console.log('iter',ev);
     })
     source.addEventListener('key',(e)=>{
         key = e.data;
         console.log('key',key);
     });
     function send(){
-        axios.get('http://ec2-13-235-246-42.ap-south-1.compute.amazonaws.com:3000/message',{key : key, data : {a : 'a'}}).then(()=>{console.log('done')}).catch(console.error);
+        axios.post('http://ec2-13-235-246-42.ap-south-1.compute.amazonaws.com:3000/message',{key : key, data : {a : 'a'}}).then(()=>{console.log('done')}).catch(console.error);
     }
   </script>
 </body>

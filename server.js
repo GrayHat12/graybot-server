@@ -2,6 +2,8 @@ var debug = require("debug");
 var http = require("http");
 var fs = require("fs");
 const dotenv = require("dotenv");
+const Gtube = require('gtube');
+const Item = require('gtube/lib/Item');
 dotenv.config();
 
 debug.enable("*");
@@ -22,6 +24,9 @@ class Custom {
     this.req = req;
     this.closeConnection = this.closeConnection.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.searchTerm = this.searchTerm.bind(this);
+    this.emit = this.emit.bind(this);
+    this.recoverItem = this.recoverItem.bind(this);
   }
   closeConnection() {
     log("connection closed", { key: this.key });
@@ -38,6 +43,35 @@ class Custom {
   sendConnection(size) {
     this.res.write("event: up\n");
     this.res.write(`data: ${size}\n\n`);
+  }
+  emit(eventKey,data){
+    this.res.write(`event: ${eventKey}\n`);
+    this.res.write(`data: ${JSON.stringify(data)}\n\n`);
+  }
+  searchTerm(recdata){
+    var ob = new Gtube(recdata['term']);
+    if('_nextpageref' in recdata){
+      ob._nextpageref = recdata['_nextpageref'];
+    }
+    ob.process(true).then((val)=>{
+      if(val==true){
+        var items = [];
+        for(var i=0;i<ob.size;i++){
+          items.push(ob.item(i).data);
+        }
+        this.emit('sr',{items:items});
+      }else{
+        this.emit('srer',{error:ob._error});
+      }
+    });
+  }
+  recoverItem(recdata){
+    var item = new Item(recdata['data']);
+    item.getItemData().then((val)=>{
+      this.emit('item',{data:val});
+    }).catch((err)=>{
+      this.emit('iter',{error: err});
+    });
   }
 }
 
@@ -83,13 +117,69 @@ var server = http
           log("invalid request body", { body: body });
         }
       });
+    } else if(req.url == "/search"){
+      var body = "";
+      req.on("data", function(chunk) {
+        body += chunk;
+        log('chunk',chunk);
+      });
+      req.on("end", function() {
+        body = body
+          .replace(/\t/g, "")
+          .replace(/\n/g, "");
+        try{
+          var recdata = JSON.parse(body);
+          log("recieved data with key",{key : recdata['key']});
+          if (connections.has(recdata['key'])) {
+            connections.get(recdata['key']).searchTerm(recdata);
+          } else {
+            log("unauthorized attempt to search song", {
+              req: req.socket.address(),
+            });
+            res.writeHead(202)
+            res.write(`{error:"key not found"}`);
+          }
+        }catch(err){
+          res.writeHead(400);
+          res.write(`{error:"${err}"}`);
+        }
+        res.end();
+      });
+    } else if(req.url == "/song"){
+      var body = "";
+      req.on("data", function(chunk) {
+        body += chunk;
+        log('chunk',chunk);
+      });
+      req.on("end", function() {
+        body = body
+          .replace(/\t/g, "")
+          .replace(/\n/g, "");
+        try{
+          var recdata = JSON.parse(body);
+          log("recieved data with key",{key : recdata['key']});
+          if (connections.has(recdata['key'])) {
+            connections.get(recdata['key']).recoverItem(recdata);
+          } else {
+            log("unauthorized attempt to search song", {
+              req: req.socket.address(),
+            });
+            res.writeHead(202)
+            res.write(`{error:"key not found"}`);
+          }
+        }catch(err){
+          res.writeHead(400);
+          res.write(`{error:"${err}"}`);
+        }
+        res.end();
+      });
     } else {
       res.writeHead(200, { "Content-Type": "text/html" });
       res.write(fs.readFileSync(__dirname + "/server.log"));
       res.end();
     }
   })
-  .listen(3000, () => {
+.listen(3000, () => {
     log("started", server.address());
   });
 
