@@ -37,5 +37,8 @@
     "dotenv": "^8.2.0",
     "gtube": "^1.1.0",
     "supports-color": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
