@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const Gtube = require('gtube');
 const Item = require('gtube/lib/Item');
 dotenv.config();
+const bigData = require('./bigdata.json');
+const url = require('url');
 
 debug.enable("*");
 debug = debug("http");
@@ -117,7 +119,7 @@ var server = http
           log("invalid request body", { body: body });
         }
       });
-    } else if(req.url == "/search"){
+    } else if (req.url == "/search") {
       var body = "";
       req.on("data", function(chunk) {
         body += chunk;
@@ -145,7 +147,7 @@ var server = http
         }
         res.end();
       });
-    } else if(req.url == "/song"){
+    } else if (req.url == "/song") {
       var body = "";
       req.on("data", function(chunk) {
         body += chunk;
@@ -173,6 +175,14 @@ var server = http
         }
         res.end();
       });
+    } else if (req.url == "/companies") {
+      var companyList = Object.keys(bigData['Symbol']);
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({list : companyList}));
+    } else if (url.parse(req.url,true).pathname == "/company") {
+      var queryObject = url.parse(req.url,true).query;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({data : bigData['Symbol'][queryObject.name]}));
     } else {
       res.writeHead(200, { "Content-Type": "text/html" });
       res.write(fs.readFileSync(__dirname + "/server.log"));
