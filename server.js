@@ -189,7 +189,7 @@ var server = http
       res.end();
     }
   })
-.listen(3000, () => {
+.listen(process.env.PORT || 3000, () => {
     log("started", server.address());
   });
 
