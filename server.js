@@ -79,7 +79,7 @@ class Custom {
 
 var server = http
   .createServer(function(req, res) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
     res.setHeader("Access-Control-Request-Method", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
     log("ping", { url: req.url, data: req.socket.address() });
