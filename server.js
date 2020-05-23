@@ -184,6 +184,7 @@ var server = http
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({list : companyList}));
     } else if (url.parse(req.url,true).pathname == "/company") {
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var queryObject = url.parse(req.url,true).query;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({data : bigData['Symbol'][queryObject.name]}));
