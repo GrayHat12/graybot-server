@@ -79,11 +79,11 @@ class Custom {
 
 var server = http
   .createServer(function(req, res) {
-    res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
     res.setHeader("Access-Control-Request-Method", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
     log("ping", { url: req.url, data: req.socket.address() });
     if (req.headers.accept && req.headers.accept == "text/event-stream") {
+      res.setHeader("Access-Control-Allow-Origin", "*");
       if (req.url == "/events") {
         sendSSE(req, res);
       } else {
@@ -91,6 +91,7 @@ var server = http
         res.end();
       }
     } else if (req.url == "/message") {
+      res.setHeader("Access-Control-Allow-Origin", "*");
       var body = "";
       req.on("data", function(chunk) {
         body += chunk;
@@ -120,6 +121,7 @@ var server = http
         }
       });
     } else if (req.url == "/search") {
+      res.setHeader("Access-Control-Allow-Origin", "*");
       var body = "";
       req.on("data", function(chunk) {
         body += chunk;
@@ -148,6 +150,7 @@ var server = http
         res.end();
       });
     } else if (req.url == "/song") {
+      res.setHeader("Access-Control-Allow-Origin", "*");
       var body = "";
       req.on("data", function(chunk) {
         body += chunk;
@@ -176,6 +179,7 @@ var server = http
         res.end();
       });
     } else if (req.url == "/companies") {
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var companyList = Object.keys(bigData['Symbol']);
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({list : companyList}));
@@ -184,6 +188,7 @@ var server = http
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({data : bigData['Symbol'][queryObject.name]}));
     } else {
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       res.writeHead(200, { "Content-Type": "text/html" });
       res.write(fs.readFileSync(__dirname + "/server.log"));
       res.end();
