@@ -227,7 +227,7 @@ var server = http
         var features = Object.keys(smalldata[date]);
         for(var j=0;j<features.length;j++){
           if(datatosend.data.includes(features[j])) continue;
-          datatosend.data.push(features[i]);
+          datatosend.data.push(features[j]);
         }
       }
       res.end(JSON.stringify(datatosend));
