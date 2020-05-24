@@ -188,6 +188,47 @@ var server = http
       var queryObject = url.parse(req.url,true).query;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({data : bigData['Symbol'][queryObject.name]}));
+    } else if(url.parse(req.url,true).pathname == '/feature'){
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      var queryObject = url.parse(req.url,true).query;
+      res.setHeader('Content-Type', 'application/json');
+      var featureName = queryObject.f;
+      var companyName = queryObject.c;
+      var smalldata = bigData['Symbol'][companyName];
+      var datatosend = {
+        data : []
+      };
+      var dates = Object.keys(smalldata);
+      for(var i=0;i<dates.length;i++){
+        var date = dates[i];
+        var value = smalldata[date][featureName];
+        if(value!=null && typeof value!='undefined'){
+          var key = Object.keys(value);
+          value = value[key];
+          datatosend.data.push({
+            date : date,
+            value : value
+          });
+        }
+      }
+      res.end(JSON.stringify(datatosend));
+    } else if(url.parse(req.url,true).pathname == '/features'){
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      res.setHeader('Content-Type', 'application/json');
+      var queryObject = url.parse(req.url,true).query;
+      var companyName = queryObject.c;
+      var smalldata = bigData['Symbol'][companyName];
+      var datatosend = {data : []};
+      var dates = Object.keys(smalldata);
+      for(var i=0;i<dates.length;i++){
+        var date = dates[i];
+        var features = Object.keys(smalldata[date]);
+        for(var j=0;j<features.length;j++){
+          if(datatosend.data.includes(features[j])) continue;
+          datatosend.data.push(features[i]);
+        }
+      }
+      res.end(JSON.stringify(datatosend));
     } else {
       res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       res.writeHead(200, { "Content-Type": "text/html" });
