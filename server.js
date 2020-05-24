@@ -81,6 +81,7 @@ var server = http
   .createServer(function(req, res) {
     res.setHeader("Access-Control-Request-Method", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     log("ping", { url: req.url, data: req.socket.address() });
     if (req.headers.accept && req.headers.accept == "text/event-stream") {
       res.setHeader("Access-Control-Allow-Origin", "*");
