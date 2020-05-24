@@ -218,7 +218,8 @@ var server = http
       res.setHeader('Content-Type', 'application/json');
       var queryObject = url.parse(req.url,true).query;
       var companyName = queryObject.c;
-      var smalldata = bigData['Symbol'][companyName];
+      try{var smalldata = bigData['Symbol'][companyName]['Technical Analysis'];}
+      catch(err){res.end('{error : "Failed 222"}')}
       var datatosend = {data : []};
       var dates = Object.keys(smalldata);
       for(var i=0;i<dates.length;i++){
