@@ -197,6 +197,8 @@ var server = http
       var companyName = queryObject.c;
       var smalldata = bigData['Symbol'][companyName]['Technical Analysis'];
       var datatosend = {
+        f: featureName,
+        c: companyName,
         data : []
       };
       var dates = Object.keys(smalldata);
@@ -220,7 +222,7 @@ var server = http
       var companyName = queryObject.c;
       try{var smalldata = bigData['Symbol'][companyName]['Technical Analysis'];}
       catch(err){res.end('{error : "Failed 222"}')}
-      var datatosend = {data : []};
+      var datatosend = {data : [],c: companyName};
       var dates = Object.keys(smalldata);
       for(var i=0;i<dates.length;i++){
         var date = dates[i];
