@@ -179,17 +179,17 @@ var server = http
         res.end();
       });
     } else if (req.url == "/companies") {
-      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var companyList = Object.keys(bigData['Symbol']);
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({list : companyList}));
     } else if (url.parse(req.url,true).pathname == "/company") {
-      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var queryObject = url.parse(req.url,true).query;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({data : bigData['Symbol'][queryObject.name]}));
     } else if(url.parse(req.url,true).pathname == '/feature'){
-      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var queryObject = url.parse(req.url,true).query;
       res.setHeader('Content-Type', 'application/json');
       var featureName = queryObject.f;
@@ -213,7 +213,7 @@ var server = http
       }
       res.end(JSON.stringify(datatosend));
     } else if(url.parse(req.url,true).pathname == '/features'){
-      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       res.setHeader('Content-Type', 'application/json');
       var queryObject = url.parse(req.url,true).query;
       var companyName = queryObject.c;
