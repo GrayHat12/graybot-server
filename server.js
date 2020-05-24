@@ -195,7 +195,7 @@ var server = http
       res.setHeader('Content-Type', 'application/json');
       var featureName = queryObject.f;
       var companyName = queryObject.c;
-      var smalldata = bigData['Symbol'][companyName];
+      var smalldata = bigData['Symbol'][companyName]['Technical Analysis'];
       var datatosend = {
         data : []
       };
