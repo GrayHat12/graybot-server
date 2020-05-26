@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const Gtube = require('gtube');
 const Item = require('gtube/lib/Item');
 dotenv.config();
-const bigData = require('./bigdata.json');
+const bigData = require('./stock-market/bigdata.json');
 const url = require('url');
 
 debug.enable("*");
