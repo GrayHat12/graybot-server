@@ -113,3 +113,8 @@ answers.json
 price.json
 
 /visualise
+
+estimatorLSVC.js
+estimatorSVC.js
+test.json
+test0.json

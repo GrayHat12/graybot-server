@@ -7,6 +7,8 @@ const Item = require('gtube/lib/Item');
 dotenv.config();
 const bigData = require('./stock-market/bigdata.json');
 const url = require('url');
+//const TrainedClassifier = require('./stock-market/estimator'); //uncomment when adding prediction script
+
 
 debug.enable("*");
 debug = debug("http");
