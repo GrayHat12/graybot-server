@@ -163,6 +163,8 @@ var SVC = function(nClasses, nRows, vectors, coefficients, intercepts, weights, 
 
 };
 
+
+
 module.exports.runLSVC = function (features=[]){
     var coefficients = trainedModel['LSVC']['coefficients'];
     var intercepts = trainedModel['LSVC']['intercepts'];

@@ -32,11 +32,12 @@
     "delay": "2000"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.4",
     "gtube": "^1.1.0",
+    "nodemon": "^2.0.4",
     "supports-color": "^7.1.0"
   },
   "devDependencies": {

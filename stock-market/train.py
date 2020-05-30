@@ -6,6 +6,7 @@ import pickle
 import requests
 import time
 import pandas as pd
+import tensorflow as tf
 from sklearn_porter import Porter
 
 file = 'BHARTIARTL.NS.json'
@@ -182,6 +183,7 @@ def generateCsv(features=toseefeatures):
 
 FEATURES = "Balance Of Power (BOP),Chaikin A/D Line,On Balance Volume (OBV),Hilbert Transform - Trend vs Cycle Mode (HT_TRENDMODE),Parabolic SAR (SAR),True Range (TRANGE),Stochastic Fast (STOCHF),Stochastic (STOCH),Simple Moving Average (SMA),Exponential Moving Average (EMA),Weighted Moving Average (WMA),Triangular Exponential Moving Average (TRIMA),Williams' %R (WILLR),Commodity Channel Index (CCI),Minus Directional Movement (MINUS_DM),Plus Directional Movement (PLUS_DM),Bollinger Bands (BBANDS),MidPoint over period (MIDPOINT),Midpoint Price over period (MIDPRICE),Chaikin A/D Oscillator (ADOSC),Kaufman Adaptive Moving Average (KAMA),Relative Strength Index (RSI),Momentum (MOM),Chande Momentum Oscillator (CMO),Rate of change : ((price/prevPrice)-1)*100,Rate of change ratio: (price/prevPrice),Aroon (AROON),Aroon Oscillator (AROONOSC),Money Flow Index (MFI),Directional Movement Index (DX),Minus Directional Indicator (MINUS_DI),Plus Directional Indicator (PLUS_DI),Average True Range (ATR),Normalized Average True Range (NATR),Stochastic Relative Strength Index (STOCHRSI),Double Exponential Moving Average (DEMA),Average Directional Movement Index (ADX),Absolute Price Oscillator (APO),Percentage Price Oscillator (PPO),Triple Exponential Moving Average (TEMA),Average Directional Movement Index Rating (ADXR),1-day Rate-Of-Change (ROC) of a Triple Smooth EMA (TRIX),Ultimate Oscillator (ULTOSC),MESA Adaptive Moving Average (MAMA),Hilbert Transform - Dominant Cycle Period (HT_DCPERIOD),Hilbert Transform - Phasor Components (HT_PHASOR),Moving Average Convergence/Divergence (MACD),MACD with Controllable MA Type (MACDEXT),Triple Exponential Moving Average (T3),Hilbert Transform - Instantaneous Trendline (HT_TRENDLINE),Hilbert Transform - SineWave (HT_SINE),Hilbert Transform - Dominant Cycle Phase (HT_DCPHASE)".split(',')
 
+#load Data
 def build_data_set(features = FEATURES):
     data_df = pd.read_csv('stats.csv')
     data_df.dropna()
@@ -199,6 +201,72 @@ def build_data_set(features = FEATURES):
     X = preprocessing.scale(X)
     return X,y
 
+#train and save model through tensorflow
+def anaysisTF():
+    test_size = 500
+    print('build data set')
+    X,y = build_data_set()
+    print('analyse')
+    print(len(X))
+    print(X.shape)
+    print(len(y))
+    x_train = X[:-test_size]
+    y_train = y[:-test_size]
+    x_test = X[test_size:]
+    y_test = y[test_size:]
+    print('x_train',len(x_train))
+    print('y_train',len(y_train))
+    print('x_test',len(x_test))
+    print('y_test',len(y_test))
+    model = tf.keras.models.Sequential()
+    model.add(tf.keras.layers.Flatten())
+    model.add(tf.keras.layers.Dense(41,activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dense(41,activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dense(2,activation=tf.nn.softmax))
+    model.compile(optimizer='adam',loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+    model.fit(x_train.tolist(),y_train,epochs=10000)
+    val_loss , val_acc = model.evaluate(x_test.tolist(),y_test)
+    print('val_loss',val_loss)
+    print('val_acc',val_acc)
+    model.save('tf_stock_model.mdel')
+    
+# load the saved tensorflow model and test
+def loadAndTest():
+    test_size = 500
+    print('build data set')
+    X,y = build_data_set()
+    print('analyse')
+    print(len(X))
+    print(X.shape)
+    print(len(y))
+    x_train = X[test_size:]
+    y_train = y[test_size:]
+    x_test = X[0:test_size]
+    y_test = y[0:test_size]
+    print('x_train',len(x_train))
+    print('y_train',len(y_train))
+    print('x_test',len(x_test))
+    print('y_test',len(y_test))
+    model = tf.keras.models.load_model('tf_stock_model.mdel')
+    #model.fit(x_train.tolist(),y_train,epochs=100)
+    print(len(x_test.tolist()[0]))
+    predictions = model.predict(x_test.tolist())
+    print('PRED')
+    i=0
+    count = 0
+    for pred in predictions:
+        print('PRED',np.argmax(pred),end=' : ')
+        print('ACTU',y_test[i])
+        if y_test[i] == np.argmax(pred):
+            count+=1
+        i+=1
+    print(count/len(predictions))
+    #val_loss , val_acc = model.evaluate(x_test.tolist(),y_test)
+    #print('val_loss',val_loss)
+    #print('val_acc',val_acc)
+    #model.save('tf_stock_model.mdel')
+
+# train and save model using scikit-learn
 def anaysis():
     test_size = 500
     print('build data set')
@@ -237,8 +305,9 @@ def anaysis():
     with open('trySVC.pkl', 'wb') as fid:
         pickle.dump(clf,fid)
 
-anaysis()
-    
+#anaysis()
+#anaysisTF()
+loadAndTest()
 
 exit(0)
     
