@@ -8,6 +8,7 @@ const axios = require('axios');
 dotenv.config();
 const bigData = require('./stock-market/bigdata.json');
 const url = require('url');
+const refresh = require('./stock-market/fetchstocks').refresh;
 //const TrainedClassifier = require('./stock-market/estimator'); //uncomment when adding prediction script
 
 const functions = [
@@ -154,14 +155,14 @@ var server = http
   .createServer(function(req, res) {
     res.setHeader("Access-Control-Request-Method", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    //res.setHeader("Access-Control-Allow-Origin", "*");
     log("ping", { url: req.url, data: req.socket.address() });
     if (req.headers.accept && req.headers.accept == "text/event-stream") {
-      res.setHeader("Access-Control-Allow-Origin", "*");
       if (req.url == "/events") {
+        res.setHeader("Access-Control-Allow-Origin", "*");
         sendSSE(req, res);
       } else if (url.parse(req.url,true).pathname == '/predict'){
-        //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+        res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
         var queryObject = url.parse(req.url,true).query;
         var companyName = queryObject.c;
         res.writeHead(200, {
@@ -323,17 +324,17 @@ var server = http
         res.end();
       });
     } else if (req.url == "/companies") {
-      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var companyList = Object.keys(bigData['Symbol']);
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({list : companyList}));
     } else if (url.parse(req.url,true).pathname == "/company") {
-      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var queryObject = url.parse(req.url,true).query;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({data : bigData['Symbol'][queryObject.name]}));
     } else if (url.parse(req.url,true).pathname == '/feature'){
-      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       var queryObject = url.parse(req.url,true).query;
       res.setHeader('Content-Type', 'application/json');
       var featureName = queryObject.f;
@@ -359,7 +360,7 @@ var server = http
       }
       res.end(JSON.stringify(datatosend));
     } else if (url.parse(req.url,true).pathname == '/features'){
-      //res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
+      res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       res.setHeader('Content-Type', 'application/json');
       var queryObject = url.parse(req.url,true).query;
       var companyName = queryObject.c;
@@ -376,6 +377,10 @@ var server = http
         }
       }
       res.end(JSON.stringify(datatosend));
+    } else if (req.url == "/refresh") {
+      refresh();
+      res.setHeader('Content-Type', 'text/plain');
+      res.end("process started");
     } else {
       res.setHeader("Access-Control-Allow-Origin", "https://master.d223052u932tmn.amplifyapp.com");
       res.writeHead(200, { "Content-Type": "text/html" });

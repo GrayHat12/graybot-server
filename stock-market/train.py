@@ -11,7 +11,6 @@ from sklearn_porter import Porter
 
 file = 'BHARTIARTL.NS.json'
 toseefeatures = ['Balance Of Power (BOP)', 'Chaikin A/D Line', 'On Balance Volume (OBV)', 'Hilbert Transform - Trend vs Cycle Mode (HT_TRENDMODE)', 'Parabolic SAR (SAR)', 'True Range (TRANGE)', 'Stochastic Fast (STOCHF)', 'Stochastic (STOCH)', 'Simple Moving Average (SMA)', 'Exponential Moving Average (EMA)', 'Weighted Moving Average (WMA)', 'Triangular Exponential Moving Average (TRIMA)', "Williams' %R (WILLR)", 'Commodity Channel Index (CCI)', 'Minus Directional Movement (MINUS_DM)', 'Plus Directional Movement (PLUS_DM)', 'Bollinger Bands (BBANDS)', 'MidPoint over period (MIDPOINT)', 'Midpoint Price over period (MIDPRICE)', 'Chaikin A/D Oscillator (ADOSC)', 'Kaufman Adaptive Moving Average (KAMA)', 'Relative Strength Index (RSI)', 'Momentum (MOM)', 'Chande Momentum Oscillator (CMO)', 'Rate of change : ((price/prevPrice)-1)*100', 'Rate of change ratio: (price/prevPrice)', 'Aroon (AROON)', 'Aroon Oscillator (AROONOSC)', 'Money Flow Index (MFI)', 'Directional Movement Index (DX)', 'Minus Directional Indicator (MINUS_DI)', 'Plus Directional Indicator (PLUS_DI)', 'Average True Range (ATR)', 'Normalized Average True Range (NATR)', 'Stochastic Relative Strength Index (STOCHRSI)', 'Double Exponential Moving Average (DEMA)', 'Average Directional Movement Index (ADX)', 'Absolute Price Oscillator (APO)', 'Percentage Price Oscillator (PPO)', 'Triple Exponential Moving Average (TEMA)', 'Average Directional Movement Index Rating (ADXR)', '1-day Rate-Of-Change (ROC) of a Triple Smooth EMA (TRIX)', 'Ultimate Oscillator (ULTOSC)', 'MESA Adaptive Moving Average (MAMA)', 'Hilbert Transform - Dominant Cycle Period (HT_DCPERIOD)', 'Hilbert Transform - Phasor Components (HT_PHASOR)', 'Moving Average Convergence/Divergence (MACD)', 'MACD with Controllable MA Type (MACDEXT)', 'Triple Exponential Moving Average (T3)', 'Hilbert Transform - Instantaneous Trendline (HT_TRENDLINE)', 'Hilbert Transform - SineWave (HT_SINE)', 'Hilbert Transform - Dominant Cycle Phase (HT_DCPHASE)']
-
 """Outdated"""
 def process(filename=file):
     data = json.loads(open(filename,'r',encoding='utf-8').read())
@@ -174,7 +173,7 @@ def generateCsv(features=toseefeatures):
             rows.append(currentRow)
         for row in rows:
             dataframe = dataframe.append(row,ignore_index=True)
-    dataframe.to_csv('stats.csv',index=True)
+    dataframe.to_csv('statss.csv',index=True)
             
         
 #generateCsv()
@@ -307,8 +306,8 @@ def anaysis():
 
 #anaysis()
 #anaysisTF()
-loadAndTest()
-
+#loadAndTest()
+#generateCsv()
 exit(0)
     
 #newprocess()
